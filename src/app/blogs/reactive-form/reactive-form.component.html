@@ -1,0 +1,123 @@
+<div class="row">
+
+    <div class="col">
+      <h3>Complete Angular Reactive From tutorial including Form field duplication, removing the duplicated field & patching data to the duplicated</h3>
+      <hr><hr>
+      At first, we need to create an angular project. Use the following command to generate the angular project using anguler cli.
+      <pre>
+          <code>
+              ng new reactive-form --routing --service-worker
+          </code>
+        </pre> 
+        Note: routing flag generates a routing module and service-worker flag enable service worker configuration automatically,
+      which will be enabled automatically in the production build. For this tutorial, we are not going to use routing. let's
+      use the main app component. To add Reactive form in angular we need to import Reactive forms module in the app module.
+      and include in the import section
+    </div>
+  
+    <div class="col-12">
+      <ngx-gist style="height: 400px;" [gistId]="'Tanver-Hasan/f0a3eecfa06f5078aee6a61e3efa5140'"></ngx-gist>
+    </div>
+    To design the forms we will use angular material. See the project repository in the github to enable angular material in
+    your project. I will discuss angular material in different post about the angular material. run the following command to
+    include angular material in your project
+    <pre>
+      <code>
+          npm install --save angular/material2-builds angular/cdk-builds
+      </code>
+    </pre> let’s create a component to build the form. To generate component, we can use angular cli. ng g c my-reactive-form --module
+    app lets add the component in the app.component.html we can move on reactive form. At first we need to inject the FormBuilder
+    in the constructor and include imports
+  
+    <div class="col-12">
+      <ngx-gist [gistId]="'Tanver-Hasan/6a0c8d6648c79c3fac296ed0680557b1'"></ngx-gist>
+    </div>
+    Declare the customer-form and initialize as FormBuilder. Form builder is used for creating multiple form controls as a group.
+    this is a very simple form with few controls. To demonstrate the form duplication we will use mobile field so that user
+    can add mobile number dynamically. To do that we need to declare mobile controls as FormArray to store controls as an array.
+  
+    <div class="col-12">
+      <ngx-gist style="height: 300px;" [gistId]="'Tanver-Hasan/bec4ef4e79a72a1b3232cbe9cd049cfb'"></ngx-gist>
+    </div>
+    Now declare a function to add mobile items in the Form array as FormGroup. Here is the method look like
+    <pre>
+        <code>
+          {{
+            "
+            private buildNumber(){
+              return  this.fb.group({
+                 number: [''],
+               });
+             }
+            
+            "
+          }}
+         
+        </code>
+      </pre> Consider the FormArra as a regular array and push items or remove items from an array. Let’s declare a getter method to
+    get access to mobile FormArray.
+    <pre>
+        <code>
+          {{
+            "
+            get mobiles(){
+              return this.curtomerForm.get('mobiles') as FormArray;
+            }
+            "
+          }}
+        </code>
+      </pre> Declare a method called addMobile and push FormGroup in the mobile FormArray. Now we can call this method form our template
+    to add mobile number dynamically, which will duplicate the form field.
+    <pre>
+        <code>
+           {{
+             "
+             private addMobile(){
+              this.mobiles.controls.push(this.buildNumber());
+            }
+             "
+           }}
+            
+        </code>
+      </pre> The same way we can remove the item from the array. To remove the item we need to access to FormArra control and remove
+    the item using the item index.
+    <pre>
+          <code>
+            {{
+              "
+              private removeMobile(index: number) {
+                this.mobiles.controls.splice(index);
+              }
+    "
+            }}
+          </code>
+        </pre> Finally, we can work on the template to build the form. We used formGroup in our template to bind our FormGroup customerForm.
+    formControlName directive to bind to our FormControl such as firstName and lastName. formArrayName is used to bind to our
+    FormArray mobiles. formGroupName used to bind to our FormGroup. addMobile() method is attached to button as click event
+    handler. So that user can add more mobile. removeMobile() method is attached to Remove button which accepts FormGroup name
+    index as a method parameter.
+    <div class="col-12">
+      <ngx-gist style="height: 700px;" [gistId]="'Tanver-Hasan/dbce0f4518fe5e789ae7a90fd5943480'"></ngx-gist>
+    </div>
+    Once the form is finished, at this moment we are writing the form value in console. In future post i will extend this project
+    with FireBase cloud firestore. lets pre-populate the form with value. which is required when we implement the edit functionality.
+    At first, i am creating an angular service and exposing data as an observable array. I will use the different post to explain
+    RXJS. service component is as follows
+    <div class="col-12">
+      <ngx-gist style="height: 700px;" [gistId]="'Tanver-Hasan/fb1c05ae70c25df3567fd364eae04274'"></ngx-gist>
+    </div>
+    To use the service, we need to inject the service in the my-reactive-form.component. Then we can call getCustomer method
+    which returns Observable of ICustomer[]. We can use first items in the array to populate the data in the customerForm.
+    The first element contains three mobile number. To prepopulate we first need to push mobile number FormGroup three times
+    in the mobile FormArray. we can use the length of mobiles then build the mobiles FormArray. we already pushed a FormGroup
+    in mobiles FormArray. So we need to delete the spare group. PatchValue() method can be used to pre-populate input field
+    with data.
+    <div class="col-12">
+      <ngx-gist style="height: 400px;" [gistId]="'Tanver-Hasan/cb5c5636eae2b936b65a50f5219e95e2'"></ngx-gist>
+    </div>
+    
+    Source code :
+    https://github.com/TanverHasan/Angular-Reactive-Form
+  
+  </div>
+  

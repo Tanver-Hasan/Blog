@@ -1,0 +1,29 @@
+<mat-sidenav-container class="app-sidenav-container">
+  <mat-sidenav #sidenav class="app-sidenav mat-elevation-z10" [opened]="!isScreenSmall()" [mode]="isScreenSmall() ? 'over' : 'side'">
+    <mat-toolbar color="primary">
+      Tanver Blog
+    </mat-toolbar>
+    <mat-list>
+      <mat-list-item>
+        <a mat-line [routerLink]="['/list','Angular']" (click)="changeContent('Angular')">Angular</a>
+      </mat-list-item>
+      <mat-list-item>
+        <a mat-line [routerLink]="['/list','Graphql']" (click)="changeContent('Graphql')">  GraphQL</a>
+      </mat-list-item>
+      <mat-list-item>
+        <a mat-line  [routerLink]="['/list','Firebase']"  (click)="changeContent('Firebase')"> Firebase</a>
+      </mat-list-item>
+      <mat-list-item>
+        <a mat-line [routerLink]="['/list','Oauth2.0']" (click)="changeContent('Oauth2')"> Oauth2.0 & Openid</a>
+      </mat-list-item>
+    </mat-list>
+  </mat-sidenav>
+
+  <div class="app-sidenav-content">
+    <app-toolbar (toggleSidenav)="sidenav.toggle()"></app-toolbar>
+    <div class="wrapper">
+        <router-outlet></router-outlet>
+    </div>
+  </div>
+
+</mat-sidenav-container>
